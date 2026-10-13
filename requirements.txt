@@ -1,0 +1,11 @@
+langchain-community==0.4.2
+langchain-chroma==1.1.0
+langchain-ollama==1.1.0
+langchain-text-splitters==1.1.2
+chromadb==1.5.9
+
+docx2txt==0.9
+pypdf==6.13.2
+unstructured==0.23.0
+openpyxl==3.1.5
+python-pptx==1.0.2

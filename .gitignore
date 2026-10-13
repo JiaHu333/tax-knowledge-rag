@@ -1,0 +1,23 @@
+# Generated local database
+db/
+
+# Private corpus and validation evidence
+private/
+standard_answers_expected.json
+validation*/
+*.zip
+
+# Python and local environment files
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
+.vscode/
+
+# Backups and OS files
+*_bk.py
+*.bak
+.DS_Store
+Thumbs.db

@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "name": "German Tax Knowledge Base – Public Demo",
+  "embedding_model": "nomic-embed-text",
+  "collections": {
+    "zh": "knowledge_base_cn",
+    "en": "knowledge_base_en"
+  },
+  "language_names": {
+    "zh": "Chinese",
+    "en": "English"
+  },
+  "topic_menu_options": {
+    "1": {
+      "topic_name": "vat_invoice",
+      "label": "VAT 发票形式审查"
+    },
+    "2": {
+      "topic_name": "employee_training",
+      "label": "公司承担员工培训费用"
+    }
+  },
+  "topic_config": {
+    "vat_invoice": {
+      "language": "zh",
+      "source": "vat_invoice_demo_cn.md",
+      "scenario_question": "请选择发票情况：\n1. 公司收到包含法定必要信息的业务发票；\n2. 发票缺少法定必要信息。",
+      "scenarios": {
+        "1": {
+          "label": "公司收到包含法定必要信息的业务发票"
+        },
+        "2": {
+          "label": "发票缺少法定必要信息"
+        }
+      },
+      "tax_types": [
+        "VAT"
+      ],
+      "ask_tax_type": false
+    },
+    "employee_training": {
+      "language": "zh",
+      "source": "employee_training_demo_cn.md",
+      "scenario_question": "请选择培训场景：\n1. 培训与当前岗位直接相关，主要基于公司经营需要；\n2. 课程主要满足员工私人兴趣，缺少明确业务关联。",
+      "scenarios": {
+        "1": {
+          "label": "培训与当前岗位直接相关，主要基于公司经营需要"
+        },
+        "2": {
+          "label": "课程主要满足员工私人兴趣，缺少明确业务关联"
+        }
+      },
+      "tax_types": [
+        "VAT",
+        "CIT",
+        "Payroll"
+      ]
+    }
+  },
+  "tax_type_option_labels": {
+    "VAT": "VAT（Umsatzsteuer）",
+    "CIT": "CIT（Körperschaftsteuer）",
+    "Payroll": "Payroll tax（Lohnsteuer）"
+  },
+  "standard_answer_title": "固定菜单标准答案",
+  "standard_answer_headings": {
+    "VAT": "标准答案：VAT（增值税）",
+    "CIT": "标准答案：CIT（企业所得税）",
+    "Payroll": "标准答案：Payroll tax（工资税）",
+    "General": "标准答案：General"
+  }
+}
