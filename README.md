@@ -28,7 +28,7 @@ Ollama 的 `nomic-embed-text` 用于建库。当前固定菜单查询使用 Chro
 ## 项目结构
 
 ```text
-german-tax-kb-demo/
+tax-knowledge-rag/
 ├── README.md
 ├── README_EN.md
 ├── SOURCES.md

@@ -28,7 +28,7 @@ Ollama `nomic-embed-text` is used during ingestion. The current fixed-menu query
 ## Repository structure
 
 ```text
-german-tax-kb-demo/
+tax-knowledge-rag/
 ├── README.md
 ├── README_EN.md
 ├── SOURCES.md
