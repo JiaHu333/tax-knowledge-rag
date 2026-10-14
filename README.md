@@ -41,7 +41,7 @@ Answer:
 | 输出 | `ask.py` | 直接展示文档答案，无语言模型改写 |
 | 验证 | `batch_validate_tax_rag.py`、`demo_expected.json` | 逐条运行菜单路径，对照答案、来源、税种和必需条件 |
 
-公开演示有 2 个主题、8 条路径：VAT 发票形式审查（2 条）；公司承担员工培训费用（VAT、CIT、Payroll 各 2 条）。这些简化示例为本仓库重新编写。官方资料见 [SOURCES.md](SOURCES.md)。
+公开演示有 3 个主题、10 条路径：VAT 发票形式审查（2 条）；公司承担员工培训费用（VAT、CIT、Payroll 各 2 条）；向非员工赠送业务礼品的费用扣除（CIT，2 条）。礼品演示按同一受赠人一个经济年度内的累计成本是否超过 50 欧元区分，不覆盖 VAT 或受赠人的税务处理。这些简化示例为本仓库重新编写。官方资料见 [SOURCES.md](SOURCES.md)。
 
 ## 本地运行
 
@@ -60,7 +60,7 @@ python ask.py --config config.json --db db
 
 ## 验收范围
 
-在本地对公开版运行过完整的 8 条菜单路径：8/8 为 `passed`，输出方式均为 `Python` 文档直读，运行错误为 0。该结果表示程序输出与独立演示基线一致，不代表独立税务审计。目前仓库没有 GitHub Actions CI 记录。
+此前公开版的 8 条菜单路径曾在本地运行，8/8 为 `passed`，输出方式均为 `Python` 文档直读，运行错误为 0。本次新增的 2 条礼品路径尚未在 Ollama/Chroma 环境中完成端到端验收，当前版本不声称 10/10 通过。验收结果只表示程序输出与独立演示基线一致，不代表独立税务审计。目前仓库没有 GitHub Actions CI 记录。
 
 在本机复现：
 
@@ -91,6 +91,7 @@ tax-knowledge-rag/
 ├── requirements.txt
 ├── .gitignore
 └── docs/CN/
+    ├── business_gifts_demo_cn.md
     ├── employee_training_demo_cn.md
     └── vat_invoice_demo_cn.md
 ```
