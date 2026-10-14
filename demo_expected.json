@@ -2,8 +2,9 @@
   "schema": 1,
   "scope": "Public demo; simplified German tax examples",
   "ask_sha256": "448f0e36807c85be0b3d1ed830507731bc8460bc3f52633ba3faa2a511d66821",
-  "config_sha256": "3f9f7a397c5124113c5409ed26e66a86ffa8ca63d4950fe719364b2030418346",
+  "config_sha256": "63094b1b1a1585b371a9f605a8bdc278a81fc8b252d3a013fbc0731fe8159bc3",
   "documents": {
+    "business_gifts_demo_cn.md": "8826c10539c2e5fa0c0874de988f26a04dddb7e385e368e5a2db0172dd1babce",
     "employee_training_demo_cn.md": "c79a381177cb0d4f1def12590e04f97640f54b4a754e08a7126327d5ea3edd88",
     "vat_invoice_demo_cn.md": "3916a34e0a4584bc8b9817392e2526bc618a6b789b574c183e3fe611eab86238"
   },
@@ -94,6 +95,28 @@
       "source": "employee_training_demo_cn.md",
       "answer": "课程主要满足员工私人兴趣，且无法证明雇主具有压倒性的自身经营利益时，雇主承担的费用原则上存在工资税风险。具体计税仍需结合合同、受益人及付款安排判断。\n\n法律依据：§ 19 Abs. 1 Satz 1 Nr. 1 EStG；R 19.7 LStR。",
       "required": ["私人兴趣", "工资税风险", "R 19.7"],
+      "status": "standard"
+    },
+    {
+      "id": "3-1",
+      "choices": ["3", "1"],
+      "topic_name": "business_gifts",
+      "label": "德国企业向同一非员工赠送业务礼品，年度累计成本不超过 50 欧元",
+      "tax": "CIT",
+      "source": "business_gifts_demo_cn.md",
+      "answer": "德国公司向非员工赠送有业务原因的礼品，若同一受赠人在同一经济年度获得的全部礼品，其购置或制造成本合计不超过 50 欧元，且礼品费用按规定单独记录，原则上可以作为经营费用扣除。应核对受赠人、年度累计和成本口径。\n\n法律依据：§ 4 Abs. 4、Abs. 5 Satz 1 Nr. 1、Abs. 7 EStG；§ 8 Abs. 1 KStG。",
+      "required": ["同一受赠人", "不超过 50 欧元", "单独记录", "Abs. 5 Satz 1 Nr. 1"],
+      "status": "standard"
+    },
+    {
+      "id": "3-2",
+      "choices": ["3", "2"],
+      "topic_name": "business_gifts",
+      "label": "德国企业向同一非员工赠送业务礼品，年度累计成本超过 50 欧元",
+      "tax": "CIT",
+      "source": "business_gifts_demo_cn.md",
+      "answer": "对不属于特殊例外的普通业务礼品，同一非员工受赠人在同一经济年度获得的礼品，其购置或制造成本累计超过 50 欧元时，礼品费用全额不得扣除，并非只排除超过 50 欧元的部分。若已计入费用，计算企业所得税应税所得时需调增；应核对年度累计和成本口径。\n\n法律依据：§ 4 Abs. 5 Satz 1 Nr. 1 EStG；§ 8 Abs. 1 KStG。",
+      "required": ["累计超过 50 欧元", "全额不得扣除", "§ 4 Abs. 5"],
       "status": "standard"
     }
   ]
