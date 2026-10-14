@@ -41,7 +41,7 @@ The answer text comes from the public sample document [vat_invoice_demo_cn.md](d
 | Display | `ask.py` | Show the authored document answer without language-model rewriting. |
 | Validate | `batch_validate_tax_rag.py`, `demo_expected.json` | Run each menu path and compare answer, source, tax type, and required conditions. |
 
-The public demo has 2 topics and 8 paths: VAT invoice review (2 paths) and employer-paid training (2 scenarios × VAT, CIT, Payroll). The simplified samples were written for this repository. Official references are listed in [SOURCES.md](SOURCES.md).
+The public demo has 3 topics and 10 paths: VAT invoice review (2 paths), employer-paid training (2 scenarios × VAT, CIT, Payroll), and deduction of business gifts to nonemployees (2 CIT paths). The gift example compares the total cost for one recipient in one fiscal year with the EUR 50 limit; it does not cover VAT or the recipient's tax treatment. The simplified samples were written for this repository. Official references are listed in [SOURCES.md](SOURCES.md).
 
 ## Run locally
 
@@ -60,7 +60,7 @@ Enter `exit`, `quit`, or `q` to leave the menu.
 
 ## Validation scope
 
-All 8 public menu paths were run locally: 8/8 `passed`, each using `Python` document-direct output, with 0 runtime errors. This establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
+The previous 8-path public version was run locally: 8/8 `passed`, each using `Python` document-direct output, with 0 runtime errors. The 2 newly added gift paths have not yet completed an end-to-end run with Ollama/Chroma, so this version does not claim 10/10 passed. Validation establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
 
 To reproduce locally:
 
@@ -91,6 +91,7 @@ tax-knowledge-rag/
 ├── requirements.txt
 ├── .gitignore
 └── docs/CN/
+    ├── business_gifts_demo_cn.md
     ├── employee_training_demo_cn.md
     └── vat_invoice_demo_cn.md
 ```
