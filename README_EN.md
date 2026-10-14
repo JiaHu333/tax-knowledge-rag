@@ -2,6 +2,8 @@
 
 English | [中文](README.md)
 
+Existing conclusions in finance and tax work are often scattered across documents and individual experience, making them time-consuming to find and dependent on a few people. This project explores a structured way to preserve tax scenarios, authored answers, and their sources for reuse, while leaving tax judgments to qualified professionals.
+
 A local, fixed-menu knowledge-base demo. Choose a topic and scenario; the application selects an authored answer from Chroma by source file, scenario heading, and tax heading. The current query path accepts no free-text questions and does not use a language model to rewrite the answer.
 
 ## What the program shows
