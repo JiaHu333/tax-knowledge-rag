@@ -70,6 +70,11 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def baseline_text_sha(path):
+    """Ignore only CRLF/LF checkout differences in versioned text files."""
+    return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+
+
 def write_json(path, value):
     tmp = path.with_suffix(path.suffix+'.tmp')
     tmp.write_text(json.dumps(value,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -179,16 +184,16 @@ def load_expected_baseline(path, root, ask, config, all_cases):
     baseline = json.loads(path.read_text(encoding="utf-8-sig"))
     if baseline.get("schema") != 1:
         raise ValueError("不支持的标准答案基线版本")
-    if sha(ask) != baseline.get("ask_sha256"):
+    if baseline_text_sha(ask) != baseline.get("ask_sha256"):
         raise ValueError("ask.py 与标准答案基线版本不一致；请使用同一交付版本")
-    if sha(config) != baseline.get("config_sha256"):
+    if baseline_text_sha(config) != baseline.get("config_sha256"):
         raise ValueError("config.json 与标准答案基线版本不一致；请使用同一交付版本")
     expected = {row["id"]: row for row in baseline["cases"]}
     if len(expected) != len(baseline["cases"]) or set(expected) != {r["id"] for r in all_cases}:
         raise ValueError("标准答案基线与当前菜单组合不一致")
     for name, checksum in baseline["documents"].items():
         files = [p for p in (root/"docs"/"CN").rglob(name) if p.is_file()]
-        if len(files) != 1 or sha(files[0]) != checksum:
+        if len(files) != 1 or baseline_text_sha(files[0]) != checksum:
             raise ValueError("文档缺失、重复或与基线版本不一致：" + name + "；确认修改后需同步更新标准答案基线")
     return expected
 
