@@ -2,7 +2,7 @@
 
 English | [中文](README.md)
 
-German tax rules are complex, and business cases often have special circumstances; in smaller companies, if earlier decisions were not documented, an employee's departure may mean asking a tax adviser about the same issue again, adding time and cost. This project organizes previously handled scenarios, conclusions, and sources in a fixed-menu knowledge base so teams can check the relevant facts, reuse existing answers or guidance, and retain knowledge through handovers.
+German tax rules are complex, and special cases often require a tax adviser; when an employee leaves, the same issue may incur time and advisory costs again. This project records prior conclusions and sources by scenario so teams can check the conditions, reuse existing guidance, and retain knowledge.
 
 A local, fixed-menu knowledge-base demo. Choose a topic and scenario; the application selects an authored answer from Chroma by source file, scenario heading, and tax heading. The current query path accepts no free-text questions and does not use a language model to rewrite the answer.
 
