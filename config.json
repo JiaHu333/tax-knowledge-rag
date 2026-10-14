@@ -18,6 +18,10 @@
     "2": {
       "topic_name": "employee_training",
       "label": "公司承担员工培训费用"
+    },
+    "3": {
+      "topic_name": "business_gifts",
+      "label": "公司赠送非员工礼品"
     }
   },
   "topic_config": {
@@ -55,6 +59,23 @@
         "CIT",
         "Payroll"
       ]
+    },
+    "business_gifts": {
+      "language": "zh",
+      "source": "business_gifts_demo_cn.md",
+      "scenario_question": "请选择德国企业赠送非员工业务礼品的年度累计成本情况（同一受赠人，按适用口径）：\n1. 不超过 50 欧元；\n2. 超过 50 欧元。",
+      "scenarios": {
+        "1": {
+          "label": "德国企业向同一非员工赠送业务礼品，年度累计成本不超过 50 欧元"
+        },
+        "2": {
+          "label": "德国企业向同一非员工赠送业务礼品，年度累计成本超过 50 欧元"
+        }
+      },
+      "tax_types": [
+        "CIT"
+      ],
+      "ask_tax_type": false
     }
   },
   "tax_type_option_labels": {
