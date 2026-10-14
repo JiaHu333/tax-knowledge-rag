@@ -1,31 +1,80 @@
-# German Tax Fixed-Menu Knowledge Base | Public Demo
+# German Tax Fixed-Menu Knowledge Base | Runnable Demo
 
 English | [中文](README.md)
 
-This runnable local demo shows how condition-dependent German tax questions can be converted into fixed menu paths and mapped to authored answers in structured documents.
+A local, fixed-menu knowledge-base demo. Choose a topic and scenario; the application selects an authored answer from Chroma by source file, scenario heading, and tax heading. The current query path accepts no free-text questions and does not use a language model to rewrite the answer.
 
-The public repository contains 2 sample topics and 8 demo paths. The full private corpus, production answer baseline, Chroma database, and raw validation logs are not included.
+## What the program shows
 
-## Public demo scope
+Excerpt from a real run of one public demo path (menu prompts are in Chinese):
 
-| Topic | Scenarios | Taxes |
-| --- | --- | --- |
-| VAT invoice review | Required information present; required information missing | VAT |
-| Employer-paid employee training | Clear business connection; mainly private interest | VAT, CIT, Payroll |
+```text
+请选择查询主题：
+1. VAT 发票形式审查
+2. 公司承担员工培训费用
+Selection: 1
 
-The sample material was written specifically for this repository and is not copied from the private corpus. It uses simplified facts to demonstrate software behavior. Official source links are listed in [SOURCES.md](SOURCES.md).
+请选择发票情况：
+1. 公司收到包含法定必要信息的业务发票；
+2. 发票缺少法定必要信息。
+3. 回到上一级菜单
+Selection: 1
+
+Selected 1 chunk(s) for answer construction:
+  Source: vat_invoice_demo_cn.md | Tax type: VAT
+
+Answer:
+若德国公司是服务接受方，购入项目用于具有进项税抵扣权的经营活动，并持有符合发票要求的凭证，相关进项税原则上可以抵扣。仍需另行检查是否存在免税业务或其他抵扣排除情形。
+法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG；§§ 14、14a UStG。
+```
+
+The answer text comes from the public sample document [vat_invoice_demo_cn.md](docs/CN/vat_invoice_demo_cn.md). If the matching section is missing or duplicated, the application raises an error instead of substituting a similar section.
 
 ## How it works
 
-1. `ingest.py` reads `docs/CN`, splits Markdown by heading structure, and stores text and metadata in local Chroma.
-2. `ask.py` loads the menu from `config.json`.
-3. The user selects a topic, scenario, and tax type.
-4. The program selects one answer by source file, scenario heading, and tax heading.
-5. The authored document text is displayed without language-model rewriting.
+| Stage | Files | Behavior |
+| --- | --- | --- |
+| Ingest | `ingest.py`, `docs/CN/` | Split Markdown by headings; store text and section metadata in local Chroma. Ingestion uses Ollama `nomic-embed-text`. |
+| Select | `config.json`, `ask.py` | The fixed menu limits topic, scenario, and tax type. The query selects exact metadata matches; it does not run vector-similarity retrieval. |
+| Display | `ask.py` | Show the authored document answer without language-model rewriting. |
+| Validate | `batch_validate_tax_rag.py`, `demo_expected.json` | Run each menu path and compare answer, source, tax type, and required conditions. |
 
-Ollama `nomic-embed-text` is used during ingestion. The current fixed-menu query path uses Chroma as a text and metadata store and does not run vector-similarity retrieval.
+The public demo has 2 topics and 8 paths: VAT invoice review (2 paths) and employer-paid training (2 scenarios × VAT, CIT, Payroll). The simplified samples were written for this repository. Official references are listed in [SOURCES.md](SOURCES.md).
 
-## Repository structure
+## Run locally
+
+Requires Python 3.11, a running Ollama service, and the `nomic-embed-text` model. From the repository root:
+
+```powershell
+conda create -n tax-kb-demo python=3.11
+conda activate tax-kb-demo
+pip install -r requirements.txt
+ollama pull nomic-embed-text
+python ingest.py --docs docs --db db
+python ask.py --config config.json --db db
+```
+
+Enter `exit`, `quit`, or `q` to leave the menu.
+
+## Validation scope
+
+All 8 public menu paths were run locally: 8/8 `passed`, each using `Python` document-direct output, with 0 runtime errors. This establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
+
+To reproduce locally:
+
+```powershell
+python batch_validate_tax_rag.py `
+  --ask ask.py `
+  --config config.json `
+  --db db `
+  --ingest ingest.py `
+  --expected demo_expected.json `
+  --out validation_demo
+```
+
+Inspect `validation_demo/summary.json`. Validation logs contain answers and selected context; `.gitignore` excludes them from the repository.
+
+## Public files and data boundary
 
 ```text
 tax-knowledge-rag/
@@ -39,54 +88,11 @@ tax-knowledge-rag/
 ├── demo_expected.json
 ├── requirements.txt
 ├── .gitignore
-└── docs/
-    └── CN/
-        ├── employee_training_demo_cn.md
-        └── vat_invoice_demo_cn.md
+└── docs/CN/
+    ├── employee_training_demo_cn.md
+    └── vat_invoice_demo_cn.md
 ```
 
-The local `db/` directory is generated by `ingest.py` and excluded by `.gitignore`.
+The full private knowledge corpus, 65-path production baseline, database, and raw validation logs are not included. The local `db/` directory is generated during ingestion and ignored by Git.
 
-## Installation
-
-```powershell
-conda create -n tax-kb-demo python=3.11
-conda activate tax-kb-demo
-pip install -r requirements.txt
-ollama pull nomic-embed-text
-```
-
-## Build and run
-
-Run from the repository root:
-
-```powershell
-python ingest.py --docs docs --db db
-python ask.py --config config.json --db db
-```
-
-Enter `exit`, `quit`, or `q` to close the application.
-
-## Batch validation
-
-```powershell
-python batch_validate_tax_rag.py `
-  --ask ask.py `
-  --config config.json `
-  --db db `
-  --ingest ingest.py `
-  --expected demo_expected.json `
-  --out validation_demo
-```
-
-Expected result: all 8 paths pass and use `Python` document-direct output. Validation artifacts contain answer and selected-context text, so they are excluded from the public repository by default.
-
-## Data boundary
-
-- Public: generic program logic, demo configuration, 2 demo documents, and 8 demo baseline cases.
-- Private: full knowledge documents, the 65-case production baseline, local database, and detailed validation logs.
-- `passed` means the program output matches the approved demo baseline; it is not an independent tax audit.
-
-## Tax notice
-
-This repository demonstrates knowledge management, retrieval workflow, and software behavior. The sample answers do not replace professional tax advice or legal analysis based on complete facts. Verify the applicable period, entity, transaction facts, and current law before practical use.
+The sample answers use simplified facts to demonstrate software behavior. Practical tax treatment requires checking the applicable period, entity, transaction facts, and current law.
