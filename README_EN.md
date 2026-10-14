@@ -60,7 +60,7 @@ Enter `exit`, `quit`, or `q` to leave the menu.
 
 ## Validation scope
 
-The previous 8-path public version was run locally: 8/8 `passed`, each using `Python` document-direct output, with 0 runtime errors. The 2 newly added gift paths have not yet completed an end-to-end run with Ollama/Chroma, so this version does not claim 10/10 passed. Validation establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
+On 14 October 2026, all 10 public menu paths were run locally: 10/10 `passed`, each using `Python` document-direct output, with 0 runtime errors. The new gift paths `3-1` and `3-2` also matched the demo baseline for answer, source, tax type, and required conditions. This establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
 
 To reproduce locally:
 
