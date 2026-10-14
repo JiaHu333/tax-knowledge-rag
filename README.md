@@ -1,31 +1,80 @@
-# 德国税务固定菜单知识库｜公开演示
+# 德国税务固定菜单知识库｜可运行演示
 
 [English](README_EN.md) | 中文
 
-这是一个可在本地运行的微型演示，用于展示如何把需要明确条件的德国税务问题拆成固定菜单，并从结构化文档中精确读取已编写的答案。
+一个本地运行的固定菜单知识库演示：从菜单选择主题与场景，在 Chroma 中按来源文件、场景标题和税种标题精确读取已编写的答案。当前查询不接受自由提问，也不调用语言模型改写答案。
 
-公开仓库只包含 2 个示例主题和 8 条演示路径。完整私有知识库、真实标准答案、Chroma 数据库以及原始验证日志均不在仓库中。
+## 运行效果
 
-## 公开演示范围
+下面是公开演示的一条实际菜单路径，内容已节选：
 
-| 主题 | 场景 | 税种 |
+```text
+请选择查询主题：
+1. VAT 发票形式审查
+2. 公司承担员工培训费用
+Selection: 1
+
+请选择发票情况：
+1. 公司收到包含法定必要信息的业务发票；
+2. 发票缺少法定必要信息。
+3. 回到上一级菜单
+Selection: 1
+
+Selected 1 chunk(s) for answer construction:
+  Source: vat_invoice_demo_cn.md | Tax type: VAT
+
+Answer:
+若德国公司是服务接受方，购入项目用于具有进项税抵扣权的经营活动，并持有符合发票要求的凭证，相关进项税原则上可以抵扣。仍需另行检查是否存在免税业务或其他抵扣排除情形。
+法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG；§§ 14、14a UStG。
+```
+
+答案文字来自公开示例文档 [vat_invoice_demo_cn.md](docs/CN/vat_invoice_demo_cn.md)。若对应章节缺失或不唯一，程序会报错，不会改用相似内容补答。
+
+## 程序如何工作
+
+| 步骤 | 文件 | 作用 |
 | --- | --- | --- |
-| VAT 发票形式审查 | 信息完整；缺少必要信息 | VAT |
-| 公司承担员工培训费用 | 明确业务关联；主要私人兴趣 | VAT、CIT、Payroll |
+| 建库 | `ingest.py`、`docs/CN/` | 按 Markdown 标题切分文档，保存正文和章节元数据到本地 Chroma；建库时使用 Ollama `nomic-embed-text` |
+| 选择 | `config.json`、`ask.py` | 固定菜单限定主题、场景、税种；查询时按元数据精确定位答案，不运行向量相似度检索 |
+| 输出 | `ask.py` | 直接展示文档答案，无语言模型改写 |
+| 验证 | `batch_validate_tax_rag.py`、`demo_expected.json` | 逐条运行菜单路径，对照答案、来源、税种和必需条件 |
 
-演示数据为本仓库重新编写，没有从私有知识库复制正文。内容采用简化事实，仅用于展示软件行为；官方资料链接见 [SOURCES.md](SOURCES.md)。
+公开演示有 2 个主题、8 条路径：VAT 发票形式审查（2 条）；公司承担员工培训费用（VAT、CIT、Payroll 各 2 条）。这些简化示例为本仓库重新编写。官方资料见 [SOURCES.md](SOURCES.md)。
 
-## 工作方式
+## 本地运行
 
-1. `ingest.py` 读取 `docs/CN`，按 Markdown 标题切分，并将文本和元数据写入本地 Chroma。
-2. `ask.py` 从 `config.json` 读取菜单结构。
-3. 用户依次选择主题、场景和税种。
-4. 程序按来源文件、场景标题和税种标题精确选择答案。
-5. 答案直接来自文档，不经过语言模型改写。
+需要 Python 3.11、可用的 Ollama 服务和 `nomic-embed-text` 模型。在仓库根目录运行：
 
-Ollama 的 `nomic-embed-text` 用于建库。当前固定菜单查询使用 Chroma 保存的文本和元数据，不执行向量相似度检索。
+```powershell
+conda create -n tax-kb-demo python=3.11
+conda activate tax-kb-demo
+pip install -r requirements.txt
+ollama pull nomic-embed-text
+python ingest.py --docs docs --db db
+python ask.py --config config.json --db db
+```
 
-## 项目结构
+输入 `exit`、`quit` 或 `q` 退出菜单。
+
+## 验收范围
+
+在本地对公开版运行过完整的 8 条菜单路径：8/8 为 `passed`，输出方式均为 `Python` 文档直读，运行错误为 0。该结果表示程序输出与独立演示基线一致，不代表独立税务审计。目前仓库没有 GitHub Actions CI 记录。
+
+在本机复现：
+
+```powershell
+python batch_validate_tax_rag.py `
+  --ask ask.py `
+  --config config.json `
+  --db db `
+  --ingest ingest.py `
+  --expected demo_expected.json `
+  --out validation_demo
+```
+
+查看 `validation_demo/summary.json`。验证目录包含答案及选段日志，由 `.gitignore` 排除，不提交到仓库。
+
+## 公开范围与项目文件
 
 ```text
 tax-knowledge-rag/
@@ -39,54 +88,11 @@ tax-knowledge-rag/
 ├── demo_expected.json
 ├── requirements.txt
 ├── .gitignore
-└── docs/
-    └── CN/
-        ├── employee_training_demo_cn.md
-        └── vat_invoice_demo_cn.md
+└── docs/CN/
+    ├── employee_training_demo_cn.md
+    └── vat_invoice_demo_cn.md
 ```
 
-`db/` 由本机运行 `ingest.py` 后生成，并由 `.gitignore` 排除。
+完整私有知识库文档、真实的 65 条路径标准答案、数据库和原始验收日志没有放入本仓库。仓库中的 `db/` 由本地建库生成并被忽略。
 
-## 安装
-
-```powershell
-conda create -n tax-kb-demo python=3.11
-conda activate tax-kb-demo
-pip install -r requirements.txt
-ollama pull nomic-embed-text
-```
-
-## 建库并运行
-
-在仓库根目录执行：
-
-```powershell
-python ingest.py --docs docs --db db
-python ask.py --config config.json --db db
-```
-
-输入 `exit`、`quit` 或 `q` 可退出。
-
-## 批量验证
-
-```powershell
-python batch_validate_tax_rag.py `
-  --ask ask.py `
-  --config config.json `
-  --db db `
-  --ingest ingest.py `
-  --expected demo_expected.json `
-  --out validation_demo
-```
-
-预期结果：8 条路径全部为 `passed`，输出方式均为 `Python`。验证结果目录包含答案和选段内容，因此默认不提交到 GitHub。
-
-## 数据边界
-
-- 公开：通用程序、演示配置、2 份演示文档、8 条演示基线。
-- 私有：完整知识库文档、65 条真实验收基线、本地数据库及详细验证日志。
-- `passed` 只表示程序输出与演示基线一致，不代表独立税务审计。
-
-## 税务说明
-
-本项目用于展示知识管理、检索流程和软件实现。演示答案不能替代针对具体事实进行的专业税务咨询或法律意见。实际应用前应核实适用期间、主体、交易事实及最新法规。
+演示答案采用简化事实，仅用于展示程序行为。实际税务判断须核实适用期间、主体、交易事实及现行法规。
