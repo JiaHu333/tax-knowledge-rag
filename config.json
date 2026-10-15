@@ -13,7 +13,7 @@
   "topic_menu_options": {
     "1": {
       "topic_name": "vat_invoice",
-      "label": "VAT 发票形式审查"
+      "label": "收到供应商发票后的增值税审核"
     },
     "2": {
       "topic_name": "employee_training",
@@ -28,19 +28,59 @@
     "vat_invoice": {
       "language": "zh",
       "source": "vat_invoice_demo_cn.md",
-      "scenario_question": "请选择发票情况：\n1. 公司收到包含法定必要信息的业务发票；\n2. 发票缺少法定必要信息。",
+      "scenario_question": "请选择供应商所在地：\n1. 供应商在德国；\n2. 供应商在国外（服务发票）。",
       "scenarios": {
         "1": {
-          "label": "公司收到包含法定必要信息的业务发票"
+          "label": "德国供应商",
+          "subscenario_question": "请选择发票类别：\n1. 一般发票；\n2. 业务招待餐饮发票；\n3. 特殊情况：可能适用 § 13b UStG。",
+          "subscenarios": {
+            "1": {
+              "label": "一般发票",
+              "subscenario_question": "请选择发票含税总额：\n1. 不超过 250 EUR；\n2. 超过 250 EUR。",
+              "subscenarios": {
+                "1": {
+                  "label": "含税总额不超过 250 EUR"
+                },
+                "2": {
+                  "label": "含税总额超过 250 EUR"
+                }
+              }
+            },
+            "2": {
+              "label": "业务招待餐饮发票",
+              "subscenario_question": "请选择餐厅发票含税总额：\n1. 不超过 250 EUR；\n2. 超过 250 EUR。",
+              "subscenarios": {
+                "1": {
+                  "label": "含税总额不超过 250 EUR"
+                },
+                "2": {
+                  "label": "含税总额超过 250 EUR"
+                }
+              }
+            },
+            "3": {
+              "label": "特殊情况：可能适用 § 13b UStG"
+            }
+          }
         },
         "2": {
-          "label": "发票缺少法定必要信息"
+          "label": "国外供应商",
+          "subscenario_question": "请选择国外供应商的服务类型：\n1. 适用一般 B2B 规则的服务发票；\n2. 国外展会入场券（展会举办地、举办方和售票方均位于同一个外国）。",
+          "subscenarios": {
+            "1": {
+              "label": "适用一般 B2B 规则的服务发票"
+            },
+            "2": {
+              "label": "国外展会入场券；展会举办地、举办方和售票方均位于同一个外国"
+            }
+          }
         }
       },
       "tax_types": [
         "VAT"
       ],
-      "ask_tax_type": false
+      "ask_tax_type": false,
+      "resolve_scenario_before_tax": true
     },
     "employee_training": {
       "language": "zh",

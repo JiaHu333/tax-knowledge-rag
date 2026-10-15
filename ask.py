@@ -233,15 +233,16 @@ def resolve_scenario_config(
     ):
         subscenarios = None
 
-    if subscenarios:
+    while subscenarios:
         subscenario_key = read_clarification_choice(
-            question_text=base_config["subscenario_question"],
+            question_text=resolved_config["subscenario_question"],
             valid_options=list(subscenarios),
         )
 
         subscenario_config = subscenarios[subscenario_key]
         resolved_config.update(subscenario_config)
         labels.append(subscenario_config["label"])
+        subscenarios = subscenario_config.get("subscenarios")
 
     if (
         resolved_config.get("needs_relief_question")

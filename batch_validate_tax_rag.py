@@ -36,10 +36,19 @@ def routes(config):
     result = []
     for menu_key, menu in config['TOPIC_MENU_OPTIONS'].items():
         topic = config['TOPIC_CONFIG'][menu['topic_name']]
+
+        def leaves(node, keys, labels):
+            children = node.get('subscenarios')
+            if children:
+                for key, child in children.items():
+                    yield from leaves(child, keys+[key], labels+[child['label']])
+            else:
+                yield keys, labels, node
+
         for sk, base in topic['scenarios'].items():
             if not base.get('askable', True): continue
-            for subkey, sub in (base.get('subscenarios') or {None:{}}).items():
-                merged = {**base, **sub}
+            for subkeys, labels, leaf in leaves(base, [], [base['label']]):
+                merged = {**base, **leaf}
                 taxes = merged.get('tax_types', topic['tax_types'])
                 for tax in taxes:
                     reliefs = (merged.get('relief_scenarios', topic.get('relief_scenarios', {}))
@@ -50,18 +59,16 @@ def routes(config):
                         ask_tax = merged.get('ask_tax_type', topic.get('ask_tax_type', True))
                         ti = str(taxes.index(tax)+1)
                         if topic.get('resolve_scenario_before_tax'):
-                            if subkey: choices.append(subkey)
+                            choices.extend(subkeys)
                             if ask_tax: choices.append(ti)
                         else:
                             if ask_tax: choices.append(ti)
-                            if subkey: choices.append(subkey)
+                            choices.extend(subkeys)
                         if rk: choices.append(rk)
-                        labels = [base['label']]
-                        if subkey: labels.append(sub['label'])
-                        if rk: labels.append(relief['label'])
+                        full_labels = labels + ([relief['label']] if rk else [])
                         result.append({'id':'-'.join(choices), 'choices':choices,
                                        'topic_number':menu_key,'topic':menu['label'],
-                                       'label':'；'.join(labels),'tax':tax})
+                                       'label':'；'.join(full_labels),'tax':tax})
     if len({r['id'] for r in result})!=len(result): raise ValueError('菜单路径编号重复。')
     return result
 

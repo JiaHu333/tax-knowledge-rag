@@ -1,122 +1,300 @@
 {
   "schema": 1,
   "scope": "Public demo; simplified German tax examples",
-  "ask_sha256": "448f0e36807c85be0b3d1ed830507731bc8460bc3f52633ba3faa2a511d66821",
-  "config_sha256": "63094b1b1a1585b371a9f605a8bdc278a81fc8b252d3a013fbc0731fe8159bc3",
+  "ask_sha256": "297e7c16f52e16150ec5e0c92ccec6a3c7f480a9cc719a7ad6520e3e63c4e10b",
+  "config_sha256": "d8c5227627d033b44e93bb08c4b99b4e7a0ac3753d1759c594aa670f0677c581",
   "documents": {
     "business_gifts_demo_cn.md": "8826c10539c2e5fa0c0874de988f26a04dddb7e385e368e5a2db0172dd1babce",
     "employee_training_demo_cn.md": "c79a381177cb0d4f1def12590e04f97640f54b4a754e08a7126327d5ea3edd88",
-    "vat_invoice_demo_cn.md": "3916a34e0a4584bc8b9817392e2526bc618a6b789b574c183e3fe611eab86238"
+    "vat_invoice_demo_cn.md": "d1533468fd8c56de0b46b63e05314314f0402d3a830ca79cc5b68324d6fcf48b"
   },
   "cases": [
     {
-      "id": "1-1",
-      "choices": ["1", "1"],
+      "id": "1-1-1-1",
+      "choices": [
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
       "topic_name": "vat_invoice",
-      "label": "公司收到包含法定必要信息的业务发票",
+      "label": "德国供应商；一般发票；含税总额不超过 250 EUR",
       "tax": "VAT",
       "source": "vat_invoice_demo_cn.md",
-      "answer": "若德国公司是服务接受方，购入项目用于具有进项税抵扣权的经营活动，并持有符合发票要求的凭证，相关进项税原则上可以抵扣。仍需另行检查是否存在免税业务或其他抵扣排除情形。\n\n法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG；§§ 14、14a UStG。",
-      "required": ["服务接受方", "经营活动", "§ 15"],
+      "answer": "核对供应商完整名称和地址、开票日期、货物或服务的数量及种类、含税总额和适用税率。符合其他进项税抵扣条件时，再判断德国增值税能否抵扣。\n\n法律依据：§ 33 UStDV；§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。",
+      "required": [
+        "含税总额",
+        "§ 33 UStDV",
+        "§ 15"
+      ],
       "status": "standard"
     },
     {
-      "id": "1-2",
-      "choices": ["1", "2"],
+      "id": "1-1-1-2",
+      "choices": [
+        "1",
+        "1",
+        "1",
+        "2"
+      ],
       "topic_name": "vat_invoice",
-      "label": "发票缺少法定必要信息",
+      "label": "德国供应商；一般发票；含税总额超过 250 EUR",
       "tax": "VAT",
       "source": "vat_invoice_demo_cn.md",
-      "answer": "发票缺少法定必要信息时，本演示不将该笔进项税直接判定为可抵扣。应先核对缺失项目并要求开票方更正；更正后仍须检查服务接受方、经营用途及抵扣排除等条件。\n\n法律依据：§ 14 Abs. 4 UStG；§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。",
-      "required": ["更正", "§ 14 Abs. 4", "§ 15"],
+      "answer": "核对双方完整名称和地址、开票日期、唯一的发票号码、供应商税号或增值税识别号、交易内容、交付或服务日期，以及按适用税率列示的金额和增值税。符合其他进项税抵扣条件时，再判断德国增值税能否抵扣。\n\n法律依据：§ 14 Abs. 4 UStG；§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。",
+      "required": [
+        "发票号码",
+        "税号",
+        "§ 14 Abs. 4"
+      ],
+      "status": "standard"
+    },
+    {
+      "id": "1-1-2-1",
+      "choices": [
+        "1",
+        "1",
+        "2",
+        "1"
+      ],
+      "topic_name": "vat_invoice",
+      "label": "德国供应商；业务招待餐饮发票；含税总额不超过 250 EUR",
+      "tax": "VAT",
+      "source": "vat_invoice_demo_cn.md",
+      "answer": "按小额发票要求核对餐厅发票，并核对具体餐食、招待地点和日期、参加人员、业务事由、金额及招待人签名。餐厅发票应与招待记录对应。进项税抵扣和招待费用的所得税扣除分别判断。\n\n法律依据：§ 33 UStDV；§ 15 Abs. 1、Abs. 1a UStG；§ 4 Abs. 5 Satz 1 Nr. 2 EStG。",
+      "required": [
+        "具体餐食",
+        "招待人签名",
+        "§ 33 UStDV"
+      ],
+      "status": "standard"
+    },
+    {
+      "id": "1-1-2-2",
+      "choices": [
+        "1",
+        "1",
+        "2",
+        "2"
+      ],
+      "topic_name": "vat_invoice",
+      "label": "德国供应商；业务招待餐饮发票；含税总额超过 250 EUR",
+      "tax": "VAT",
+      "source": "vat_invoice_demo_cn.md",
+      "answer": "按普通发票要求核对餐厅发票，包括接受方名称、餐厅税号或增值税识别号，以及分列的增值税金额；同时核对具体餐食、招待地点和日期、参加人员、业务事由、金额及招待人签名。餐厅发票应与招待记录对应。进项税抵扣和招待费用的所得税扣除分别判断。\n\n法律依据：§ 14 Abs. 4、§ 15 Abs. 1、Abs. 1a UStG；§ 4 Abs. 5 Satz 1 Nr. 2 EStG。",
+      "required": [
+        "接受方名称",
+        "分列的增值税金额",
+        "招待人签名"
+      ],
+      "status": "standard"
+    },
+    {
+      "id": "1-1-3",
+      "choices": [
+        "1",
+        "1",
+        "3"
+      ],
+      "topic_name": "vat_invoice",
+      "label": "德国供应商；特殊情况：可能适用 § 13b UStG",
+      "tax": "VAT",
+      "source": "vat_invoice_demo_cn.md",
+      "answer": "如果交易可能由收票方承担德国增值税，具体开票、核算和申报办法应咨询税务师。即使发票总额不超过 250 EUR，也不能套用小额发票简化规则。\n\n法律依据：§ 13b UStG；§ 33 UStDV。",
+      "required": [
+        "咨询税务师",
+        "不超过 250 EUR",
+        "§ 33 UStDV"
+      ],
+      "status": "standard"
+    },
+    {
+      "id": "1-2-1",
+      "choices": [
+        "1",
+        "2",
+        "1"
+      ],
+      "topic_name": "vat_invoice",
+      "label": "国外供应商；适用一般 B2B 规则的服务发票",
+      "tax": "VAT",
+      "source": "vat_invoice_demo_cn.md",
+      "answer": "德国公司为经营活动购买、且适用一般 B2B 服务地点规则的服务，服务地点通常在德国。符合 § 13b UStG 条件时，由德国公司核算德国增值税；进项税能否抵扣另按 § 15 UStG 判断。\n\n法律依据：§ 3a Abs. 2、§ 13b、§ 15 Abs. 1 Satz 1 Nr. 4 UStG。",
+      "required": [
+        "一般 B2B",
+        "§ 13b",
+        "§ 15"
+      ],
+      "status": "standard"
+    },
+    {
+      "id": "1-2-2",
+      "choices": [
+        "1",
+        "2",
+        "2"
+      ],
+      "topic_name": "vat_invoice",
+      "label": "国外供应商；国外展会入场券；展会举办地、举办方和售票方均位于同一个外国",
+      "tax": "VAT",
+      "source": "vat_invoice_demo_cn.md",
+      "answer": "德国公司为经营活动购买该展会的现场入场券时，服务地点为展会实际举办地。发票上的增值税按该国规定核对；展会举办地、举办方和售票方所在地不一致时，应咨询税务师。\n\n法律依据：§ 3a Abs. 3 Nr. 5 UStG（德国服务地点判断）。",
+      "required": [
+        "实际举办地",
+        "咨询税务师",
+        "§ 3a Abs. 3 Nr. 5"
+      ],
       "status": "standard"
     },
     {
       "id": "2-1-1",
-      "choices": ["2", "1", "1"],
+      "choices": [
+        "2",
+        "1",
+        "1"
+      ],
       "topic_name": "employee_training",
       "label": "培训与当前岗位直接相关，主要基于公司经营需要",
       "tax": "VAT",
       "source": "employee_training_demo_cn.md",
       "answer": "若培训服务由公司取得并用于具有进项税抵扣权的经营活动，公司持有合规发票时，单独列示的进项税原则上可以抵扣。培训服务免征 VAT 或存在抵扣排除时，没有相应进项税可抵或不得抵扣。\n\n法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG；发票要求见 §§ 14、14a UStG。",
-      "required": ["公司取得", "合规发票", "§ 15"],
+      "required": [
+        "公司取得",
+        "合规发票",
+        "§ 15"
+      ],
       "status": "standard"
     },
     {
       "id": "2-1-2",
-      "choices": ["2", "1", "2"],
+      "choices": [
+        "2",
+        "1",
+        "2"
+      ],
       "topic_name": "employee_training",
       "label": "培训与当前岗位直接相关，主要基于公司经营需要",
       "tax": "CIT",
       "source": "employee_training_demo_cn.md",
       "answer": "培训与员工当前岗位直接相关，并主要由公司的经营需要引起时，相关费用原则上属于经营费用。公司应保留培训内容、参加人员、岗位关联及付款凭证。\n\n法律依据：§ 4 Abs. 4 EStG；法人所得计算另见 § 8 Abs. 1 KStG。",
-      "required": ["岗位直接相关", "经营费用", "§ 4 Abs. 4"],
+      "required": [
+        "岗位直接相关",
+        "经营费用",
+        "§ 4 Abs. 4"
+      ],
       "status": "standard"
     },
     {
       "id": "2-1-3",
-      "choices": ["2", "1", "3"],
+      "choices": [
+        "2",
+        "1",
+        "3"
+      ],
       "topic_name": "employee_training",
       "label": "培训与当前岗位直接相关，主要基于公司经营需要",
       "tax": "Payroll",
       "source": "employee_training_demo_cn.md",
       "answer": "职业培训或继续教育主要基于雇主自身经营利益开展时，原则上不作为员工工资处理。岗位关联和雇主安排应当能够被证明。\n\n法律依据：R 19.7 LStR；§ 19 EStG。",
-      "required": ["雇主自身经营利益", "不作为员工工资", "R 19.7"],
+      "required": [
+        "雇主自身经营利益",
+        "不作为员工工资",
+        "R 19.7"
+      ],
       "status": "standard"
     },
     {
       "id": "2-2-1",
-      "choices": ["2", "2", "1"],
+      "choices": [
+        "2",
+        "2",
+        "1"
+      ],
       "topic_name": "employee_training",
       "label": "课程主要满足员工私人兴趣，缺少明确业务关联",
       "tax": "VAT",
       "source": "employee_training_demo_cn.md",
       "answer": "课程缺少明确经营用途且主要满足员工私人兴趣时，本演示不将相关进项税直接判定为可抵扣。应先核实服务接受方、费用承担原因、实际用途以及是否构成员工报酬。\n\n法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。",
-      "required": ["不将相关进项税直接判定为可抵扣", "实际用途", "§ 15"],
+      "required": [
+        "不将相关进项税直接判定为可抵扣",
+        "实际用途",
+        "§ 15"
+      ],
       "status": "standard"
     },
     {
       "id": "2-2-2",
-      "choices": ["2", "2", "2"],
+      "choices": [
+        "2",
+        "2",
+        "2"
+      ],
       "topic_name": "employee_training",
       "label": "课程主要满足员工私人兴趣，缺少明确业务关联",
       "tax": "CIT",
       "source": "employee_training_demo_cn.md",
       "answer": "缺少明确业务关联时，不能仅凭“培训费”名称认定为普通经营培训费用。应进一步判断公司付款是否构成工资性报酬、其他经营支出或非经营性支出，并据此处理。\n\n法律依据：§ 4 Abs. 4 EStG；§ 8 Abs. 1 KStG。",
-      "required": ["不能仅凭", "工资性报酬", "§ 4 Abs. 4"],
+      "required": [
+        "不能仅凭",
+        "工资性报酬",
+        "§ 4 Abs. 4"
+      ],
       "status": "standard"
     },
     {
       "id": "2-2-3",
-      "choices": ["2", "2", "3"],
+      "choices": [
+        "2",
+        "2",
+        "3"
+      ],
       "topic_name": "employee_training",
       "label": "课程主要满足员工私人兴趣，缺少明确业务关联",
       "tax": "Payroll",
       "source": "employee_training_demo_cn.md",
       "answer": "课程主要满足员工私人兴趣，且无法证明雇主具有压倒性的自身经营利益时，雇主承担的费用原则上存在工资税风险。具体计税仍需结合合同、受益人及付款安排判断。\n\n法律依据：§ 19 Abs. 1 Satz 1 Nr. 1 EStG；R 19.7 LStR。",
-      "required": ["私人兴趣", "工资税风险", "R 19.7"],
+      "required": [
+        "私人兴趣",
+        "工资税风险",
+        "R 19.7"
+      ],
       "status": "standard"
     },
     {
       "id": "3-1",
-      "choices": ["3", "1"],
+      "choices": [
+        "3",
+        "1"
+      ],
       "topic_name": "business_gifts",
       "label": "德国企业向同一非员工赠送业务礼品，年度累计成本不超过 50 欧元",
       "tax": "CIT",
       "source": "business_gifts_demo_cn.md",
       "answer": "德国公司向非员工赠送有业务原因的礼品，若同一受赠人在同一经济年度获得的全部礼品，其购置或制造成本合计不超过 50 欧元，且礼品费用按规定单独记录，原则上可以作为经营费用扣除。应核对受赠人、年度累计和成本口径。\n\n法律依据：§ 4 Abs. 4、Abs. 5 Satz 1 Nr. 1、Abs. 7 EStG；§ 8 Abs. 1 KStG。",
-      "required": ["同一受赠人", "不超过 50 欧元", "单独记录", "Abs. 5 Satz 1 Nr. 1"],
+      "required": [
+        "同一受赠人",
+        "不超过 50 欧元",
+        "单独记录",
+        "Abs. 5 Satz 1 Nr. 1"
+      ],
       "status": "standard"
     },
     {
       "id": "3-2",
-      "choices": ["3", "2"],
+      "choices": [
+        "3",
+        "2"
+      ],
       "topic_name": "business_gifts",
       "label": "德国企业向同一非员工赠送业务礼品，年度累计成本超过 50 欧元",
       "tax": "CIT",
       "source": "business_gifts_demo_cn.md",
       "answer": "对不属于特殊例外的普通业务礼品，同一非员工受赠人在同一经济年度获得的礼品，其购置或制造成本累计超过 50 欧元时，礼品费用全额不得扣除，并非只排除超过 50 欧元的部分。若已计入费用，计算企业所得税应税所得时需调增；应核对年度累计和成本口径。\n\n法律依据：§ 4 Abs. 5 Satz 1 Nr. 1 EStG；§ 8 Abs. 1 KStG。",
-      "required": ["累计超过 50 欧元", "全额不得扣除", "§ 4 Abs. 5"],
+      "required": [
+        "累计超过 50 欧元",
+        "全额不得扣除",
+        "§ 4 Abs. 5"
+      ],
       "status": "standard"
     }
   ]

@@ -12,22 +12,30 @@ Excerpt from a real run of one public demo path (menu prompts are in Chinese):
 
 ```text
 请选择查询主题：
-1. VAT 发票形式审查
+1. 收到供应商发票后的增值税审核
 2. 公司承担员工培训费用
+3. 公司赠送非员工礼品
 Selection: 1
 
-请选择发票情况：
-1. 公司收到包含法定必要信息的业务发票；
-2. 发票缺少法定必要信息。
-3. 回到上一级菜单
+请选择供应商所在地：
+1. 供应商在德国；
+2. 供应商在国外（服务发票）。
 Selection: 1
 
-Selected 1 chunk(s) for answer construction:
-  Source: vat_invoice_demo_cn.md | Tax type: VAT
+请选择发票类别：
+1. 一般发票；
+2. 业务招待餐饮发票；
+3. 特殊情况：可能适用 § 13b UStG。
+Selection: 1
+
+请选择发票含税总额：
+1. 不超过 250 EUR；
+2. 超过 250 EUR。
+Selection: 1
 
 Answer:
-若德国公司是服务接受方，购入项目用于具有进项税抵扣权的经营活动，并持有符合发票要求的凭证，相关进项税原则上可以抵扣。仍需另行检查是否存在免税业务或其他抵扣排除情形。
-法律依据：§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG；§§ 14、14a UStG。
+核对供应商完整名称和地址、开票日期、货物或服务的数量及种类、含税总额和适用税率。符合其他进项税抵扣条件时，再判断德国增值税能否抵扣。
+法律依据：§ 33 UStDV；§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。
 ```
 
 The answer text comes from the public sample document [vat_invoice_demo_cn.md](docs/CN/vat_invoice_demo_cn.md). If the matching section is missing or duplicated, the application raises an error instead of substituting a similar section.
@@ -41,7 +49,7 @@ The answer text comes from the public sample document [vat_invoice_demo_cn.md](d
 | Display | `ask.py` | Show the authored document answer without language-model rewriting. |
 | Validate | `batch_validate_tax_rag.py`, `demo_expected.json` | Run each menu path and compare answer, source, tax type, and required conditions. |
 
-The public demo has 3 topics and 10 paths: VAT invoice review (2 paths), employer-paid training (2 scenarios × VAT, CIT, Payroll), and deduction of business gifts to nonemployees (2 CIT paths). The gift example compares the total cost for one recipient in one fiscal year with the EUR 50 limit; it does not cover VAT or the recipient's tax treatment. The simplified samples were written for this repository. Official references are listed in [SOURCES.md](SOURCES.md).
+The public demo has 3 topics and 15 paths: supplier-invoice VAT review (7 paths), employer-paid training (2 scenarios × VAT, CIT, Payroll), and deduction of business gifts to nonemployees (2 CIT paths). The gift example compares the total cost for one recipient in one fiscal year with the EUR 50 limit; it does not cover VAT or the recipient's tax treatment. The simplified samples were written for this repository. Official references are listed in [SOURCES.md](SOURCES.md).
 
 ## Run locally
 
@@ -60,7 +68,7 @@ Enter `exit`, `quit`, or `q` to leave the menu.
 
 ## Validation scope
 
-On 14 October 2026, all 10 public menu paths were run locally: 10/10 `passed`, each using `Python` document-direct output, with 0 runtime errors. The new gift paths `3-1` and `3-2` also matched the demo baseline for answer, source, tax type, and required conditions. This establishes agreement with the separate demo baseline; it is not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
+On 15 October 2026, all 15 paths in the current public demo were run locally: 15/15 `passed` (7 VAT, 6 training, and 2 gift paths). Every answer used `Python` document-direct output; return codes and stderr were clear, and answers, sources, tax types, and required conditions matched the demo baseline. This is a software acceptance check, not an independent tax audit. The repository does not currently have a GitHub Actions CI record.
 
 To reproduce locally:
 
