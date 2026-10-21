@@ -12,58 +12,37 @@ The goal is to return the maintained standard answer for each supported question
 
 ## What the program shows
 
-Excerpt from a real run of one public demo path. The Chinese text below is the actual interface; the table that follows explains the same choices in English.
+English translation of one public demo interaction. The running application currently displays the prompts and answers in Chinese.
 
 ```text
-请选择查询主题：
-1. 收到供应商发票后的增值税审核
-2. 公司承担员工培训费用
-3. 公司赠送非员工礼品
+Select a topic:
+1. VAT review of an incoming supplier invoice
+2. Employer-paid employee training
+3. Business gifts to nonemployees
 Selection: 1
 
-请选择供应商所在地：
-1. 供应商在德国；
-2. 供应商在国外（服务发票）。
+Select the supplier's location:
+1. Supplier located in Germany
+2. Supplier located abroad (service invoices)
 Selection: 1
 
-请选择发票类别：
-1. 一般发票；
-2. 业务招待餐饮发票；
-3. 特殊情况：可能适用 § 13b UStG。
+Select the invoice category:
+1. General invoice
+2. Business entertainment meal invoice
+3. Special case: reverse charge under § 13b UStG may apply
 Selection: 1
 
-请选择发票含税总额：
-1. 不超过 250 EUR；
-2. 超过 250 EUR。
+Select the gross invoice total:
+1. EUR 250 or less, including VAT
+2. More than EUR 250, including VAT
 Selection: 1
 
 Answer:
-核对供应商完整名称和地址、开票日期、货物或服务的数量及种类、含税总额和适用税率。符合其他进项税抵扣条件时，再判断德国增值税能否抵扣。
-法律依据：§ 33 UStDV；§ 15 Abs. 1 Satz 1 Nr. 1、Abs. 2 UStG。
+Check the supplier's full name and address, invoice date, quantity and description of goods or services, gross amount, and applicable VAT rate. Then assess whether German input VAT is deductible, subject to the other input VAT requirements.
+Legal references: § 33 UStDV; § 15 Abs. 1 Satz 1 Nr. 1, Abs. 2 UStG.
 ```
 
-### English guide to the example
-
-The example follows menu path `1 → 1 → 1 → 1`:
-
-| Step | Chinese prompt or choice | English meaning | Selected value |
-| --- | --- | --- | --- |
-| Topic | 收到供应商发票后的增值税审核 | VAT review of an incoming supplier invoice | `1` |
-| Supplier location | 供应商在德国 | Supplier located in Germany | `1` |
-| Invoice category | 一般发票 | General invoice | `1` |
-| Gross invoice total | 不超过 250 EUR | EUR 250 or less, including VAT | `1` |
-
-The top-level topics are:
-
-| Menu choice | Chinese label | English meaning |
-| --- | --- | --- |
-| `1` | 收到供应商发票后的增值税审核 | VAT review of an incoming supplier invoice |
-| `2` | 公司承担员工培训费用 | Employer-paid employee training |
-| `3` | 公司赠送非员工礼品 | Business gifts to nonemployees |
-
-English explanation of the sample answer: check the supplier's full name and address, invoice date, quantity and description of goods or services, gross amount, and applicable VAT rate. Then assess input VAT deductibility subject to the other input VAT requirements. Legal references: § 33 UStDV and § 15 Abs. 1 Satz 1 Nr. 1, Abs. 2 UStG.
-
-These tables and the answer explanation are documentation translations. The application continues to show Chinese prompts and authored Chinese answers; an English runtime interface is not included.
+The example follows menu path `1 → 1 → 1 → 1`.
 
 The answer text comes from the public sample document [vat_invoice_demo_cn.md](docs/CN/vat_invoice_demo_cn.md). If the matching section is missing or duplicated, the application raises an error instead of substituting a similar section.
 
