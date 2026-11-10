@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "scope": "Public demo; simplified German tax examples",
-  "ask_sha256": "297e7c16f52e16150ec5e0c92ccec6a3c7f480a9cc719a7ad6520e3e63c4e10b",
+  "ask_sha256": "b3f5801382577e819920b7d705738030d1a990c3a5a373f7676d16109ed1ef16",
   "config_sha256": "d8c5227627d033b44e93bb08c4b99b4e7a0ac3753d1759c594aa670f0677c581",
   "documents": {
     "business_gifts_demo_cn.md": "8826c10539c2e5fa0c0874de988f26a04dddb7e385e368e5a2db0172dd1babce",

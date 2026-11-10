@@ -2,6 +2,8 @@
 
 Answers stay in source documents. This module handles menu navigation,
 deterministic document selection, and display without model rewriting.
+This query-only variant opens an existing Chroma database without Ollama.
+The separate ingestion workflow still requires its original dependencies.
 """
 
 import argparse
@@ -14,9 +16,7 @@ from langchain_chroma import Chroma
 
 from langchain_core.documents import Document
 
-from langchain_ollama import OllamaEmbeddings
-
-SCRIPT_REVISION = "2026-10-13-public-demo-config-v1"
+SCRIPT_REVISION = "2026-11-10-public-demo-no-ollama-query-v1"
 
 DB_DIR = None
 
@@ -29,8 +29,6 @@ TOPIC_CONFIG = {}
 TOPIC_MENU_OPTIONS = {}
 
 TAX_TYPE_OPTION_LABELS = {}
-
-EMBEDDING_MODEL = "nomic-embed-text"
 
 EXIT_COMMANDS = {'quit', 'exit', 'q'}
 
@@ -89,7 +87,6 @@ def configure(config_path, db_dir):
 
     global COLLECTIONS
     global DB_DIR
-    global EMBEDDING_MODEL
     global LANGUAGE_NAMES
     global STANDARD_ANSWER_HEADINGS
     global STANDARD_ANSWER_TITLE
@@ -106,7 +103,6 @@ def configure(config_path, db_dir):
     TAX_TYPE_OPTION_LABELS = config["tax_type_option_labels"]
     STANDARD_ANSWER_TITLE = config["standard_answer_title"]
     STANDARD_ANSWER_HEADINGS = config["standard_answer_headings"]
-    EMBEDDING_MODEL = config.get("embedding_model", "nomic-embed-text")
 
 def read_clarification_choice(question_text, valid_options, allow_back=True):
     """Read a valid terminal choice or propagate an exit command."""
@@ -290,13 +286,13 @@ def ask_for_tax_type(available_tax_types):
     )
     return option_map[choice]
 
-def get_vector_store(language, embeddings):
-    """Open the collection for the selected language."""
+def get_vector_store(language):
+    """Open the existing collection for metadata reads without embeddings."""
 
     return Chroma(
         persist_directory=DB_DIR,
         collection_name=COLLECTIONS[language],
-        embedding_function=embeddings,
+        embedding_function=None,
     )
 
 def metadata_matches_source(metadata, source_name):
@@ -609,11 +605,7 @@ def main(config_path="config.json", db_dir="db"):
             f"Database directory not found: {DB_DIR}. Run ingest.py first."
         )
 
-    embeddings = OllamaEmbeddings(
-        model=EMBEDDING_MODEL
-    )
-
-    print("RAG QA is ready.")
+    print("Rule-based knowledge-base QA is ready.")
     print("输入 exit、quit 或 q 可以退出。")
     print()
 
@@ -693,7 +685,6 @@ def main(config_path="config.json", db_dir="db"):
 
         vectorstore = get_vector_store(
             language=language,
-            embeddings=embeddings,
         )
 
         try:
